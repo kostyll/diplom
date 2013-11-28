@@ -1,0 +1,8 @@
+Простое и удобное создание документации в Sphinx
+http://www.ibm.com/developerworks/ru/library/os-sphinx-documentation/
+
+Sphinx: документирование кода в Python
+http://proft.me/2010/09/15/sphinx-dokumentirovanie-koda-v-python/
+
+Как настроить автоматическую генерацию документации?
+http://toster.ru/q/20241
