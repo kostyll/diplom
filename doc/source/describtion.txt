@@ -6,3 +6,16 @@ http://proft.me/2010/09/15/sphinx-dokumentirovanie-koda-v-python/
 
 Как настроить автоматическую генерацию документации?
 http://toster.ru/q/20241
+
+Шаблон диссертации в LaTeX
+http://habrahabr.ru/post/157153/
+https://github.com/AndreyAkinshin/Russian-Phd-LaTeX-Dissertation-Template
+
+Вычисления в латехе? Да запросто!
+http://habrahabr.ru/post/146742/
+
+Диплом бакалавра в LaTeX, или ДСТУ 3008-95 в 150 строк
+http://habrahabr.ru/post/144648/
+
+Скажем нет форматированию пробелами и энтерами
+http://habrahabr.ru/post/190274/
