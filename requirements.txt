@@ -1,8 +1,13 @@
 Django==1.6
+Jinja2==2.7.1
+MarkupSafe==0.18
 PIL==1.1.7
 PyBrain==0.3
 PyNN==0.7.5
+Pygments==1.6
+Sphinx==1.2b3
 argparse==1.2.1
+docutils==0.11
 networkx==1.8.1
 numpy==1.6.1
 pandas==0.12.0
