@@ -3,6 +3,10 @@
 \usepackage[ukrainian]{babel}
 \usepackage{vmargin}
 \usepackage{cmap}
+\usepackage{siunitx,hyperref,lipsum}
+
+\usepackage{nameref,zref-xr}
+\zxrsetup{toltxlabel}
 
 \DeclareUnicodeCharacter{00A0}{\nobreakspace}
 
@@ -1223,9 +1227,9 @@ a - b - d - e - h - a ;
 
 min ( a , b ) \textless{} min ( p , q ) \textless{} max ( a , b ) \& max ( p , q ) \textgreater{} max ( a , b ) \textbar{}
 
-\begin{DUlineblock}{0em}
+\begin{list}{0em}
 \item[] Min ( a , b ) \textless{} max ( p , q ) \textless{} max ( a , b ) \& min ( p , q ) \textless{} min ( a , b ) .
-\end{DUlineblock}
+\end{list}
 
 Іншими словами , точка перетину дуг виникає у разі виходу управління за межі пари вершин ( a , b ) .
 
@@ -1412,6 +1416,6 @@ $f(V,V_i,C_v,Z(G)_i,Z(G),Rup) = P_{vuln_i}$
 \label{7addition::doc}\label{7addition:id1}
 
 
-\renewcommand{\indexname}{Індекс}
-\printindex
+%\renewcommand{\indexname}{Індекс}
+%\printindex
 \end{document}
