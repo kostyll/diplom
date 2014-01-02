@@ -5,8 +5,12 @@ runtime: python27
 threadsafe: True
 
 handlers:
-#- url: /templates
-# static_files: templates
+- url: /templates
+  static_dir: templates
+
+- url: /index\.html
+  static_files: templates/index.html
+  upload: templates/index.html
 
 - url: /doc
   static_dir: doc/build/html

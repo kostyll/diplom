@@ -38,17 +38,5 @@ class Echo(remote.Service):
     def echo(self,request):
         return EchoResponse(message=request.message)
 
-@an_api.api_class(
-        resource_name="echo2",
-        path="echo2"
-    )
-class Echo2(remote.Service):
-    @endpoints.method(
-            EchoRequest,
-            EchoResponse
-        )
-    def echo2(self,request):
-        return EchoResponse(message=request.message)
-
 
 __author__ = 'andrew.vasyltsiv'

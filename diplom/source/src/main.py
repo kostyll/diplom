@@ -27,6 +27,5 @@ def application():
     return vertix_application
 
 vertix_application = application()
-print vertix_application
 
 __author__ = 'andrew.vasyltsiv'
