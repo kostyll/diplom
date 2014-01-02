@@ -1,0 +1,28 @@
+application: vetrix
+api_version: 1
+version: 1
+runtime: python27
+threadsafe: True
+
+handlers:
+#- url: /templates
+# static_files: templates
+
+- url: /doc
+  static_dir: doc/build/html
+
+- url: /_ah/spi/.*
+  script: main_api.vertix_application
+
+- url: .*
+  script: main.vertix_application
+
+libraries:
+ - name: webapp2
+   version: latest
+
+ - name: webob
+   version: latest
+
+ - name: endpoints
+   version: latest
