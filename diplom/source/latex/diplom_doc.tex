@@ -17,11 +17,24 @@
 \DeclareGraphicsExtensions{.pdf,.jpeg,.png,.jpg}
 
 \usepackage{titlesec}
-\titleformat{\chapter}
-  {\normalfont\fontsize{14}{16}\bfseries\centering} % format
-  {\thesection}  % label
-  {1em}          % sep
-  {}             % before-code
+%\titleformat{\chapter}[hang]
+%{\Huge\bfseries}
+%{\thechapter\hsp\textcolor{gray75}{|}\hsp}
+%{0pt}
+%{\Huge\bfseries}
+%\renewcommand\thechapter{\Roman{chapter}} 
+%\renewcommand\thesection{\arabic{chapter}.\arabic{section}}
+
+\titleformat{\chapter}[display]
+ {\fontfamily{ptm}\large\bfseries\centering}
+ {\chaptertitlename\ \thechapter}
+ {5pt}
+ {\large}% NEW
+%\titlespacing*{\chapter}{0pt}{30pt}{20pt
+%  {\normalfont\fontsize{14}{16}\bfseries\centering} % format
+%  {\thesection}  % label
+%  {1em}          % sep
+%  {}             % before-code
 \titleformat{\section}
   {\normalfont\fontsize{14}{16}\bfseries\centering} % format
   {\thesection}  % label
