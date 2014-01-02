@@ -11,8 +11,11 @@ class testsRest(BasicTestCase):
 class testEndpoints(BasicTestCase):
     def testEndpointsEcho(self):
         message = '3'
-        jsondata = json.loads(self.testapi.echo2().echo2(body={'message':message}).body)
+        try:
+            print list(method for method in dir(self.testapi) if not method.startswith('_'))
+        except Exception,e:
+            print "error",e
+        jsondata = json.loads(self.testapi.echo().echo(body={'message':message}).body)
         self.assertEqual(jsondata['message'], message)
-
 
 __author__ = 'andrew.vasyltsiv'
