@@ -12,10 +12,17 @@ class testEndpoints(BasicTestCase):
     def testEndpointsEcho(self):
         message = '3'
         try:
-            print list(method for method in dir(self.testapi) if not method.startswith('_'))
+            resources = list(resource for resource in dir(self.testapi) if not resource.startswith('_'))
+            print resources
+            for resource in resources:
+                exec('rdir = dir(self.testapi.%s())'% resource)
+                print "resource=%s"%resource,rdir
+                methods = list(method for method in rdir if not method.startswith("_"))
+                print "methods",methods
         except Exception,e:
             print "error",e
-        jsondata = json.loads(self.testapi.echo().echo(body={'message':message}).body)
-        self.assertEqual(jsondata['message'], message)
+        result = self.testapi.echo().echo(body={'message':message}).execute()
+        self.assertEqual(result['message'], message)
+        self.assertEqual(1, 2)
 
 __author__ = 'andrew.vasyltsiv'
