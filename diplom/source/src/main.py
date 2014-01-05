@@ -7,16 +7,22 @@ sys.path.insert(0, 'lib/')
 import gettext
 import webapp2
 
-class Echo(webapp2.RequestHandler):
-    def get(self):
-        message = self.request.get('message')
-        self.response.write(message)
-
+from app.rest import (
+        Echo,
+        Main,
+        UploadHandler,
+        ServeHandler,
+        ListProjectsHandler,
+    )
 
 def application():
     vertix_application = webapp2.WSGIApplication(
         [
             ('/echo', Echo),
+            ('/upload', UploadHandler),
+            ('/serve/([^/]+)?', ServeHandler),
+            ('/projects/', ListProjectsHandler),
+            ('/',Main),
         ]
         ,debug=True)
     vertix_application.translations = {}

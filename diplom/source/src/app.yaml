@@ -1,16 +1,26 @@
-application: vetrix
+application: vertix
 api_version: 1
 version: 1
 runtime: python27
 threadsafe: True
 
 handlers:
-- url: /templates
-  static_dir: templates
+# - url: /static/
+#   static_dir: static/bs-admin
 
-- url: /index\.html
-  static_files: templates/index.html
-  upload: templates/index.html
+# - url: /index\.html
+#   static_files: templates/index.html
+#   upload: templates/index.html
+
+- url: /(.*\.css)
+  mime_type: text/css
+  static_files: static/sb-admin/\1
+  upload: static/bs-admin/(.*\.css)
+
+- url: /(.*\.js)
+  mime_type: text/javascript
+  static_files: static/sb-admin/\1
+  upload: static/bs-admin/(.*\.js)
 
 - url: /doc
   static_dir: doc/build/html
