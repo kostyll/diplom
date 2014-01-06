@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 
-from pycparser.c_parse import CParser
+from pycparser.c_parser import CParser
 
 def get_ast_from_text(source):
     return CParser().parse(source)

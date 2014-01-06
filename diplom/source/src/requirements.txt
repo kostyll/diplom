@@ -12,6 +12,7 @@ WebTest==2.0.11
 argparse==1.2.1
 astroid==1.0.1
 beautifulsoup4==4.3.2
+clang==3.4.dev192547
 docutils==0.11
 google-api-python-client==1.2
 httplib2==0.8

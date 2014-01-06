@@ -31,15 +31,15 @@ import pystache
 def get_project_files(source):
     try:
         if source[:2] != 'PK':  # not zip magic
-            return {'project':{'untitled':source}, 'error':False}
+            return {'project':[('untitled',source)], 'error':False}
         else:
             file_like_obj = StringIO(source)
             zip = ZipFile(file_like_obj)
             files = zip.namelist()
-            project_files = map(
-                lambda x: {x: zip.open(x).read()} , 
+            project_files = list(map(
+                lambda x: (x,zip.open(x).read()), 
                 list(file for file in files if (file.endswith('.c') or (file.endswith('.h')))
-                ))
+                )))
             return {'project':project_files, 'error':False}
     except Exception, e:
         print e

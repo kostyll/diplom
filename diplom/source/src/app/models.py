@@ -6,6 +6,7 @@ class Metrix(db.Model):
     mackkeib = db.StringProperty()
     holsted = db.StringProperty()
     jilb = db.StringProperty()
+    sloc = db.StringProperty()
 
 
 class Vulnerability(db.Model):
