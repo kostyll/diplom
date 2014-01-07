@@ -119,32 +119,6 @@ class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
         project_files = get_project_files(uploaded_file) 
         # print dir(blob_info)
         project_name = str(blob_info.filename)
-
-        # project = Project(
-        #         name = project_name
-        #     )
-        # project.put()
-        # if project_files['error'] == False:
-        #     if isinstance(project_files['project'], (tuple,list)):
-        #         for item in project_files['project']:
-        #             source_name = item.items()[0][0]
-        #             # print source_name
-        #             source_content = item.items()[0][1]
-        #             # print source_content
-        #             source_file = SourceFile(
-        #                     name = source_name,
-        #                     source = source_content,
-        #                     project = project
-        #                 )
-        #             source_file.put()
-        #     else:
-        #         source_content = project_files['project']['untitled']
-        #         source_file = SourceFile(
-        #                 name = project_name,
-        #                 source = source_content,
-        #                 project = project
-        #             )
-        #         source_file.put()
         processor = SourceProcessor(project_files, project_name)
 
         # self.send_blob(blob_info)

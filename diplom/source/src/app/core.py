@@ -1,6 +1,7 @@
 # -*- coding: utf8 -*-
 
 from collections import namedtuple
+from StringIO import StringIO
 from functools import reduce
 Source = namedtuple("Source", "project file_name file_source file_db_item holsted mackkeib jilb sloc vulns")
 
@@ -27,6 +28,19 @@ from vertix.vulns import (
 
 from vertix import get_ast_from_text
 
+def remove_Directives(source):
+    file = StringIO(source)
+    result = []
+    for line in file.readlines():
+        if line.lstrip(' ').startswith('#'):
+            continue
+        if line.lstrip(' ').startswith('//'):
+            continue
+            #line = "//"+line
+        result.append(line)
+    return '\n'.join(result)
+
+
 class SourceProcessor():
     def __init__(self, project_files, project_name):
         print project_name
@@ -34,27 +48,32 @@ class SourceProcessor():
             raise TypeError ("project_files have to be dict")
         if not isinstance(project_name, str):
             raise TypeError("project_name must to be str")
-        try:
-            if project_files['error'] == False:
-                if isinstance (project_files['project'], (list)):
-                    # list of files
-                    self.project_files = project_files['project']
-                    self.project_name = project_name
-                    self.project = Project.get_or_insert('name='+self.project_name)
-                    self.project.name = self.project_name
-                    self.files = []
-                    self.process_sources()
-                    self.project.put()
-                else:
-                    raise SourceFilesFormatError
+        # try:
+        if project_files['error'] == False:
+            if isinstance (project_files['project'], (list)):
+                # list of files
+                self.project_files = project_files['project']
+                self.project_name = project_name
+                self.project = Project.get_or_insert('name='+self.project_name)
+                self.project.name = self.project_name
+                self.files = []
+                self.process_sources()
+                self.project.put()
             else:
                 raise SourceFilesFormatError
-        except AttributeError:
+        else:
             raise SourceFilesFormatError
+        # except Exception, e:
+        #     print e
+        #     raise SourceFilesFormatError
 
     def process_sources(self):
         for file_name,file_source in self.project_files:
-            ast = None#get_ast_from_text(file_source)
+
+            file_source = remove_Directives(file_source)
+            print file_source
+
+            ast = get_ast_from_text(file_source)
             holsted = (get_holsted(file_source,ast))
             mackkeib = (get_mackkeib(file_source,ast))
             jilb = (get_jilb(file_source,ast))
