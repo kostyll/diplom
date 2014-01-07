@@ -68,8 +68,8 @@ __tabversion__ = "3.2"       # Table version
 # Change these to modify the default behavior of yacc (if you wish)
 #-----------------------------------------------------------------------------
 
-# #USING STUB OF FILE OPENNING standart function OPEN
-# from utils.stubs import force_open as open
+#USING STUB OF FILE OPENNING standart function OPEN
+from utils.stubs import force_open as open
 
 
 yaccdebug   = 1                # Debugging mode.  If set, yacc generates a
