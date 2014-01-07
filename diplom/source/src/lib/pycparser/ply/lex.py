@@ -35,7 +35,7 @@ __version__    = "3.4"
 __tabversion__ = "3.2"       # Version of table file used
 
 #USING STUB OF FILE OPENNING standart function OPEN
-from utils.stubs import open
+from utils.stubs import force_open as open
 
 import re, sys, types, copy, os
 
