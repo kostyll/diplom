@@ -14,6 +14,7 @@ from app.rest import (
         ServeHandler,
         ListProjectsHandler,
         ListProjectFilesSLOC,
+        TestCode,
     )
 
 def application():
@@ -25,6 +26,7 @@ def application():
             ('/projects/', ListProjectsHandler),
             ('/ajax/project/([^/]+)?/SLOC/',ListProjectFilesSLOC),
             ('/',Main),
+            ('/test/',TestCode)
         ]
         ,debug=True)
     vertix_application.translations = {}

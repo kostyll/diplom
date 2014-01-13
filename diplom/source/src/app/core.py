@@ -5,7 +5,8 @@ from StringIO import StringIO
 from md5 import md5
 import re
 from functools import reduce
-Source = namedtuple("Source", "project file_name file_source file_db_item holsted mackkeib jilb sloc vulns")
+from interpolation import LinearInterpolation
+Source = namedtuple("Source", "project file_name file_source file_db_item holsted mackkeib jilb sloc vulns potential p")
 
 class SourceFilesFormatError(Exception):
     pass
@@ -67,6 +68,7 @@ class SourceProcessor():
                 self.project = Project.get_or_insert('name='+self.project_name)
                 self.project.name = self.project_name
                 self.project.short = md5(project_name).hexdigest()
+                self.init_sources_for_extrapolation()
                 self.files = []
                 self.process_sources()
                 self.project.put()
@@ -77,6 +79,48 @@ class SourceProcessor():
         # except Exception, e:
         #     print e
         #     raise SourceFilesFormatError
+
+    @staticmethod
+    def calc_potential(v,GZ,Rup,vulns):
+        if vulns == 0:
+            return float((Rup*GZ)/float(v))
+        else:
+            return float((vulns*Rup*GZ)/float(v))
+
+    def init_sources_for_extrapolation(self):
+        sources = SourceFile.all()
+        tab = []
+        tab_x = []
+        tab_f = []
+        for source in sources:
+            if source.vulnerability is not None and \
+                source.potential is not None and \
+                source.p is not None:
+                if int(source.vulnerability.vulnerability) >0 :
+                    tab.append((source.potential,source.p))
+        for i, item in enumerate(tab):
+            if tab[i-1] == tab[i]:
+                tab.pop(i)
+        tab.sort()
+        tab = tab
+        self.tab_x = map(lambda x: x[0], tab)
+        self.tab_f = map(lambda x: x[1], tab)
+
+
+    @staticmethod
+    def calc_p(potential):
+        if len(self.tab_x) < 2:
+            return 0.5
+        try:
+            table = LinearInterpolation(
+                x_index = tuple(self.tab_x),
+                values = tuple(self.tab_f),
+                extrapolate=True
+                )
+            return float(table(potential))
+        except:
+            return 0.5
+
 
     def process_sources(self):
 
@@ -132,7 +176,13 @@ class SourceProcessor():
                                 )
             vulnerability.put()
 
-
+            potential = self.calc_potential(
+                                    holsted[0],
+                                    mackkeib,
+                                    jilb,
+                                    vulns
+                                )
+            p = self.calc_p(potential)
             source = Source(
                     project = self.project,
                     file_name = file_name,
@@ -142,13 +192,17 @@ class SourceProcessor():
                             name = file_name,
                             source = file_source,
                             metrix = metrix,
-                            vulnerability = vulnerability
+                            vulnerability = vulnerability,
+                            potential = potential,
+                            p = p
                         ),
                     holsted = holsted,
                     mackkeib = mackkeib,
                     jilb = jilb,
                     sloc = sloc,
-                    vulns = vulns
+                    vulns = vulns,
+                    potential = potential,
+                    p = p   
                 )
             source.file_db_item.put()
             self.files.append(source)
@@ -167,7 +221,12 @@ class SourceProcessor():
 
         vulns = reduce(lambda x,y: (x+y), map(lambda x: x.vulns, self.files))
 
-        # p = holsted[0]*
+        potential = reduce(lambda x,y : x if x>y else y, map(lambda x: x.potential, self.files))
+
+        p = reduce(lambda x,y : x if x>y else y, map(lambda x: x.p, self.files))
+
+        self.project.potential = potential
+        self.project.p = p
 
         metrix = Metrix(
                 sloc = str(sloc),

@@ -3,3 +3,6 @@ TODO LIST
 
 * ADD JS LIB of rendering TREES : git@github.com:fzaninotto/CodeFlower.git
 * ADD JS LIBs used in project
+* FIX BUBLE DIAGRAM - holsted metric - extract from tuple V
+* REMOVE 3d fake diagram  +
+* ADD BUTTONS FOR CHANGING p-values of source_file & project

@@ -18,6 +18,7 @@ class Project(db.Model):
     name = db.StringProperty()
     metrix = db.ReferenceProperty(Metrix, default=None)
     vulnerability = db.ReferenceProperty(Vulnerability, default=None)
+    potential = db.FloatProperty()
     p = db.FloatProperty()
 
 
@@ -27,6 +28,7 @@ class SourceFile(db.Model):
     source = db.BlobProperty()
     metrix = db.ReferenceProperty(Metrix, default=None)
     vulnerability = db.ReferenceProperty(Vulnerability, default=None)
+    potential = db.FloatProperty()
     p = db.FloatProperty()
 
 

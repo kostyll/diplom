@@ -254,4 +254,28 @@ class ListProjectFilesSLOC(webapp2.RequestHandler):
         # json.dump(result, self.response.out)
 
 
+class TestCode(webapp2.RequestHandler):
+    def get(self):
+        """
+        In [2]: table = interpolation.LinearInterpolation(
+           ...: x_index=(2,3,4),
+           ...: values=(4,6,8),
+           ...: extrapolate=True)
+
+        In [3]: table(5)
+        Out[3]: 10.0
+
+        In [4]: table(5.1)
+        Out[4]: 10.2
+
+        """
+        from interpolation import LinearInterpolation
+        table = LinearInterpolation(
+                x_index=(2,3,4),
+                values=(4,3,8),
+                extrapolate=True
+            )
+        self.response.write(str(table(3)))
+
+
 __author__ = 'andrew.vasyltsiv'

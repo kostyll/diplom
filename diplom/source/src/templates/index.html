@@ -151,6 +151,7 @@ line.link {
                                  <th>{{head_metrix_mackkeib}}</th>
                                  <th>{{head_metrix_jilb}}</th>
                                  <th>{{head_vulns}}</th>
+                                 <th>P</th>
                                </tr>
                              </thead>
                              <tbody>
@@ -161,6 +162,7 @@ line.link {
                                  <td>{{metrix.mackkeib}}</td>
                                  <td>{{metrix.jilb}}</td> 
                                  <td>{{vulnerability.vulnerability}}</td> 
+                                 <td>{{p}}</td>
                                </tr>
 
                                <!-- Add project info to buble-diagram data -->
@@ -230,7 +232,11 @@ line.link {
                             <a href="#" class="list-group-item">
                               <span class="badge">{{vulnerability.vulnerability}}</span>
                               <p class="list-group-item-text">{{head_vulns}}</p>
-                            </a>                            
+                            </a>
+                            <a href="#" class="list-group-item">
+                              <span class="badge">{{p}}</span>
+                              <p class="list-group-item-text">Ймовірність використання вразливостей</p>
+                            </a>                
                           </div>
                       </div>
                    </td>
@@ -240,10 +246,18 @@ line.link {
                           <h3 class="panel-title">{{chart_title}}</h3>
                         </div>
                         <div class="panel-body" style="widht='180';">
-                          <div id="piechart-{{name}}"></div>
+                          <div id="chart-sloc-{{short}}"></div>
+<!-- 
                           <script type="text/javascript">draw3d('None',"piechart-{{name}}")</script>
+
+ -->
+                          <script type="text/javascript">
+                              var my_data_{{short}} = get_project_sloc_tree('{{name}}');
+                              var sloc_chart_{{short}} = new CodeFlower('#chart-sloc-{{short}}',200,200);
+                              sloc_chart_{{short}}.update(my_data_{{short}});
+                          </script>
                           <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal-{{short}}">
-                          Launch demo modal
+                          Збільшити
                         </button>
 
 <!-- Modal -->
@@ -252,16 +266,16 @@ line.link {
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        <h4 class="modal-title" id="myModalLabel">{{name}}</h4>
       </div>
       <div class="modal-body">
-        <div id="chart-sloc-{{short}}"></div>
+        <div id="chart-sloc-{{short}}-modal"></div>
         <script type="text/javascript">
 
           // var url = '/ajax/project/'+{{name}}+'/SLOC/';
           // $('#chart-'+global_item_index+'-data').load(url);
-          var my_data_{{short}} = get_project_sloc_tree('{{name}}');
-          console.log("data = ",my_data_{{short}});
+          // var my_data_{{short}}_modal = get_project_sloc_tree('{{name}}');
+          // console.log("data = ",my_data_{{short}});
           // var json_data in my_data;
           // for (var key in my_data) {
           //   if (my_data.hasOwnProperty(key)) {
@@ -269,14 +283,14 @@ line.link {
           //   }
           // };
           // console.log('obj_prop = ', Object.getOwnPropertyNames(my_data));
-          var sloc_chart_{{short}} = new CodeFlower('#chart-sloc-{{short}}',500,400);
-          sloc_chart_{{short}}.update(my_data_{{short}});
+          var sloc_chart_{{short}}_modal = new CodeFlower('#chart-sloc-{{short}}-modal',500,400);
+          sloc_chart_{{short}}_modal.update(my_data_{{short}});
         </script>
         
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Закрити</button>
         <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
       </div>
     </div><!-- /.modal-content -->
