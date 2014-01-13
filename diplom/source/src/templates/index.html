@@ -13,99 +13,53 @@
     
     <!-- Add custom CSS here -->
     <link href="/css/sb-admin.css" rel="stylesheet">
-    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css">
     <!-- Page Specific CSS -->
     <!--<link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css"> -->
     <link rel="stylesheet" href="/css/morris-0.4.3.min.css">
     <script src="/js/bootstrap.js"></script>
 
 <script type="text/javascript" src="/jsapi.js"></script>
+<script type="text/javascript" src="/graph3d.js"></script>
+<script type="text/javascript" src="/project_interface.js"></script>
 
-<script type= "text/javascript">
-      // google.load("visualization", "1", {packages:["corechart"]});
-      // google.setOnLoadCallback(drawChart);
-      // function drawChart() {
-      //   var data = google.visualization.arrayToDataTable([
-      //     ['Task', 'Hours per Day'],
-      //     ['Work',     11],
-      //     ['Eat',      2],
-      //     ['Commute',  2],
-      //     ['Watch TV', 2],
-      //     ['Sleep',    7]
-      //   ]);
+<!-- adding CodeFlower support -->
+<!-- <script type="text/javascript" src="/CodeFlower/javascripts/d3/d3.js"></script>
+<script type="text/javascript" src="/CodeFlower/javascripts/CodeFlower.js"></script> -->
+<script type="text/javascript" src="/CodeFlower/javascripts/d3/d3.js"></script>
+<script type="text/javascript" src="/CodeFlower/javascripts/d3/d3.geom.js"></script>
+<script type="text/javascript" src="/CodeFlower/javascripts/d3/d3.layout.js"></script>
+<script type="text/javascript" src="/CodeFlower/javascripts/CodeFlower.js"></script>
+<script type="text/javascript" src="/CodeFlower/javascripts/dataConverter.js"></script>
 
-      //   var options = {
-      //     title: 'My Daily Activities'
-      //   };
+ <style type="text/css">
+circle.node {
+  cursor: pointer;
+  stroke: #000;
+  stroke-width: .5px;
+}
 
-      //   var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-      //   chart.draw(data, options);
-      // }
-</script>
+circle.node.directory {
+  stroke: #9ecae1;
+  stroke-width: 2px;
+}
 
-<script type="text/javascript">
-  function drawPieChart(chart_id,array,title) {
-    google.load("visualization", "1", {packages:["corechart"]});
-    google.setOnLoadCallback(drawChart);
-    function drawChart(data,t) {
-      var data = google.visualization.arrayToDataTable(array);
-      var options = {
-        title: title
-      };
+circle.node.collapsed {
+  stroke: #555;
+}
 
-      var chart = new google.visualization.PieChart(document.getElementById(chart_id));
-      chart.draw(data, options);
-    }
-  }
-</script>
+.nodetext {
+  fill: #252929;
+  font-weight: bold;
+  text-shadow: 0 0 0.2em white;
+}
 
-<script type="text/javascript">
- function addRow(tableID) {
- 
-            var table = document.getElementById(tableID);
- 
-            var rowCount = table.rows.length;
-            var row = table.insertRow(rowCount);
- 
-            var cell1 = row.insertCell(0);
-            var element1 = document.createElement("input");
-            element1.type = "checkbox";
-            element1.name="chkbox[]";
-            cell1.appendChild(element1);
- 
-            var cell2 = row.insertCell(1);
-            cell2.innerHTML = rowCount + 1;
- 
-            var cell3 = row.insertCell(2);
-            var element2 = document.createElement("input");
-            element2.type = "text";
-            element2.name = "txtbox[]";
-            cell3.appendChild(element2);
- 
- 
-        }
- 
-        function deleteRow(tableID) {
-            try {
-            var table = document.getElementById(tableID);
-            var rowCount = table.rows.length;
- 
-            for(var i=0; i<rowCount; i++) {
-                var row = table.rows[i];
-                var chkbox = row.cells[0].childNodes[0];
-                if(null != chkbox && true == chkbox.checked) {
-                    table.deleteRow(i);
-                    rowCount--;
-                    i--;
-                }
- 
- 
-            }
-            }catch(e) {
-                alert(e);
-            }
-        }
-</script>
+line.link {
+  fill: none;
+  stroke: #9ecae1;
+  stroke-width: 1.5px;
+}
+    </style>
 
   </head>
   <body>
@@ -158,51 +112,7 @@
                 {{/projects}}
               </ul>
           </li>
-          <!--<li class=""><a href="/file/"><i class="fa fa-file"></i> {{head_file}}</a></li> -->
-          <!--<li class=""><a href="/uploadfile/"><i class="fa fa-file"></i> {{head_uploadfile}}</a></li> --> 
-          <!--
-          <li><a href="charts.html"><i class="fa fa-bar-chart-o"></i> Charts</a></li>
-          <li><a href="tables.html"><i class="fa fa-table"></i> Tables</a></li>
-          <li><a href="forms.html"><i class="fa fa-edit"></i> Forms</a></li>
-          <li><a href="typography.html"><i class="fa fa-font"></i> Typography</a></li>
-          <li><a href="bootstrap-elements.html"><i class="fa fa-desktop"></i> Bootstrap Elements</a></li>
-          <li><a href="bootstrap-grid.html"><i class="fa fa-wrench"></i> Bootstrap Grid</a></li>
-          <li><a href="blank-page.html"><i class="fa fa-file"></i> Blank Page</a></li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-square-o-down"></i> Dropdown <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li><a href="#">Dropdown Item</a></li>
-              <li><a href="#">Another Item</a></li>
-              <li><a href="#">Third Item</a></li>
-              <li><a href="#">Last Item</a></li>
-            </ul>
-          </li> -->
         </ul>
-
-<!--
-        <div class="panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title">{{head_file_upload}}</h3>
-              <form action="{{upload_url}}" method="POST" class="form-inline" role="form" enctype="multipart/form-data">
-                <div class="form-group">
-                  <input type="file" class="btn btn-primary" name="file">
-                </div>
-                <button type="submit" class="btn btn-primary">{{upload_button}}</button>
-              </form>
-              <h3 class="panel-title">{{head_file_search}}</h3>
-              <form action="/search/" method="POST" class="form-inline" role="form">
-                <div class="form-group">
-                  <input type="email" class="form-control" id="" placeholder="{{search_query}}">
-                </div>
-                <button type="submit" class="btn btn-primary">{{search_button}}</button>
-              </form>
-
-              <h3 class="panel-title">{{path_title}}</h3>
-            </div>
-          <div class="panel-body">
-            <div id="path"></div>
-          </div>
-        </div> -->
 
         <script type="text/javascript">
           var html = "";
@@ -214,25 +124,25 @@
         </script>
         
 
+
+
         <div class="panel panel-default">
           <div class="panel-body">
              <table class="table table-bordered table-hover table-striped tablesorter" id="main_table">
                <thead>
                  <tr>
-                   <th class="header headerSortDown">
+                   <th class="header">
                      {{content_description}}
                      <i class="fa fa-sort"></i>
                    </th>
-                   <th style="width:300px;">
+                   <th>
                      {{content_chart}}
                    </th>
                  </tr>
                </thead>
                <tbody>
                  <tr>
-                   <td>
-                      <div class="panel panel-default">
-                        <div class="panel-body">
+                   <td class="cols-xs-4">
                            <table class="table table-hover">
                              <thead>
                                <tr>
@@ -252,22 +162,35 @@
                                  <td>{{metrix.jilb}}</td> 
                                  <td>{{vulnerability.vulnerability}}</td> 
                                </tr>
+
+                               <!-- Add project info to buble-diagram data -->
+                               <script type="text/javascript">
+                                var row = Array(
+                                    '{{name}}',
+                                    {{metrix.holsted}},
+                                    {{metrix.mackkeib}},
+                                    '{{name}}',
+                                    {{vulnerability.vulnerability}}
+                                  )
+                                bubledata.push(row);
+                                // alert(row)
+                               </script>
+
                                {{/projects}}
                              </tbody>
                            </table>
-                        </div>
-                      </div>
                    </td>
-                   <td cols>
-                    <div class="panel panel-info" style="width:300px; ">
+                   <td class="cols-xs-4" width="280px">
+                    <div class="panel panel-info" style="width='180px';" >
                         <div class="panel-heading">
                           <h3 class="panel-title">{{chart_title}}</h3>
                         </div>
                         <div class="panel-body" >
-                          <div id="piechart1" style="width: 200px; height: 200px;"></div>
-                          <div id="piechart2" style="width: 200px; height: 200px;"></div>
+                          <div id="bublechart-general" ></div>
                         </div>
                     </div>
+                          
+
                    </td>
                  </tr>
                  {{#items}}
@@ -280,111 +203,107 @@
                         </div>
 
                         <div class="panel-body">
-                        <!--
-                           <table class="table table-hover">
-                             <thead>
-                               <tr>
-                                 <th>{{head_metrix_holsted}}</th>
-                                 <th>{{head_metrix_mackkeib}}</th>
-                                 <th>{{head_metrix_jilb}}</th>
-                                 <th>{{head_vulns}}</th>
-                               </tr>
-                             </thead>
-                             <tbody>
-                               <tr>
-                                 <td>{{metrix.holsted}}</td>
-                                 <td>{{metrix.mackkeib}}</td>
-                                 <td>{{metrix.jilb}}</td>
-                                 <td>{{vulnerability.vulnerability}}</td>
-                               </tr>                               
-                             </tbody>
-                           </table>
-                        </div>  -->
 
-                        <div class="list-group">
-                          <a href="#" class="list-group-item">
-                            <!--<h4 class="list-group-item-heading">{{head_metrix_holsted}}</h4> -->
-                            <span class="badge">{{metrix.holsted}}:0</span>
-                            <p class="list-group-item-text">{{head_metrix_holsted}}</p>
-                          </a>
-                          <a href="#" class="list-group-item">
-                            <span class="badge">{{metrix.mackkeib}}:0</span>
-                            <p class="list-group-item-text">{{head_metrix_mackkeib}}</p>
-                          </a>
-                          <a href="#" class="list-group-item">
-                            <span class="badge">{{metrix.jilb}}:0</span>
-                            <p class="list-group-item-text">{{head_metrix_jilb}}</p>
-                          </a>
-                          <a href="#" class="list-group-item">
-                            <span class="badge">{{vulnerability.vulnerability}}:0</span>
-                            <p class="list-group-item-text">{{head_vulns}}</p>
-                          </a>
-                        </div>
-
+                          <div class="list-group">
+                            <a href="#" class="list-group-item">
+                              <!--<h4 class="list-group-item-heading">{{head_metrix_holsted}}</h4> -->
+                              <span class="badge">
+                                <div id="holsted-value"></div>
+                              </span>
+                              <script type="text/javascript">
+                                $("#holsted-value").replaceWith(Array({{metrix.holsted}})[0][0]);
+                              </script>
+                              <p class="list-group-item-text">{{head_metrix_holsted}}</p>
+                            </a>
+                            <a href="#" class="list-group-item">
+                              <span class="badge">{{metrix.mackkeib}}</span>
+                              <p class="list-group-item-text">{{head_metrix_mackkeib}}</p>
+                            </a>
+                            <a href="#" class="list-group-item">
+                              <span class="badge">{{metrix.jilb}}</span>
+                              <p class="list-group-item-text">{{head_metrix_jilb}}</p>
+                            </a>
+                            <a href="#" class="list-group-item">
+                              <span class="badge">{{metrix.sloc}}</span>
+                              <p class="list-group-item-text">{{head_metrix_sloc}}</p>
+                            </a>
+                            <a href="#" class="list-group-item">
+                              <span class="badge">{{vulnerability.vulnerability}}</span>
+                              <p class="list-group-item-text">{{head_vulns}}</p>
+                            </a>                            
+                          </div>
                       </div>
                    </td>
-
                    <td cols>
-                    <div class="panel panel-info" style="width:300px; ">
+                    <div class="panel panel-info" >
                         <div class="panel-heading">
                           <h3 class="panel-title">{{chart_title}}</h3>
                         </div>
-                        <div class="panel-body" >
-                          <div id="piechart1" style="width: 200px; height: 200px;"></div>
+                        <div class="panel-body" style="widht='180';">
+                          <div id="piechart-{{name}}"></div>
+                          <script type="text/javascript">draw3d('None',"piechart-{{name}}")</script>
+                          <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal-{{short}}">
+                          Launch demo modal
+                        </button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal-{{short}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <div id="chart-sloc-{{short}}"></div>
+        <script type="text/javascript">
+
+          // var url = '/ajax/project/'+{{name}}+'/SLOC/';
+          // $('#chart-'+global_item_index+'-data').load(url);
+          var my_data_{{short}} = get_project_sloc_tree('{{name}}');
+          console.log("data = ",my_data_{{short}});
+          // var json_data in my_data;
+          // for (var key in my_data) {
+          //   if (my_data.hasOwnProperty(key)) {
+          //     console.log(key+'='+my_data[key]);
+          //   }
+          // };
+          // console.log('obj_prop = ', Object.getOwnPropertyNames(my_data));
+          var sloc_chart_{{short}} = new CodeFlower('#chart-sloc-{{short}}',500,400);
+          sloc_chart_{{short}}.update(my_data_{{short}});
+        </script>
+        
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
                         </div>
                     </div>
                    </td>
-
                   </tr>
+                  <script type="text/javascript">
+                      global_item_intex += 1;
+                  </script>
+
                  {{/items}}
                </tbody>
              </table>
           </div>
         </div>
 
-<script type="text/javascript">
-    var data1 = ([
-      ['Task', 'Hours per Day'],
-      ['Work',     11],
-      ['Eat',      2],
-      ['Commute',  2],
-      ['Watch TV', 2],
-      ['Sleep',    7]
-    ]);
-  drawPieChart("piechart1",data1,"1asdasd")
-  var data2 = ([
-      ['Task', 'Hours per Day'],
-      ['Work',     11],
-      ['Eat',      2],
-      ['Commute',  2],
-      ['Watch TV', 23],
-      ['Sleep',    17]
-    ]);
-  drawPieChart("piechart2",data2,"1asdasd")
-  // addRow("main_table")
-  // var row = $("#main_table").find('tbody').append($("<str>"))
-  // row.append('<tr>')
-  // row.append('asdasd')
-  // for (i=0;i<2;i++)
-  // {
+    </div> <!--wrapper -->
 
-  //   $("#main_table").find('tbody')
-  //   .find('tr')
-  //       .append($('<td>').text(i))
-  // }
-  // $("#main_table").find('tbody').append("</tr>")
-  // $('#main_table > tbody:last').append(
-  //   '<tr><td>'+
-  //   "<a href='/remove/' class='button-remove'>remove</a>"+
-  //   '</td><td>'
-  //   +
-  //   '</td></tr>'
-  //   );
-
-  
-</script>
-
-    </div> <!--wrapper>
+     <script type="text/javascript">
+        if (bubledata.length>1){
+          drawBubleChart(bubledata,"bublechart-general");
+        }        
+     </script>
 
     <!-- jQuery -->
     <!-- <script src="//code.jquery.com/jquery.js"></script> -->

@@ -13,6 +13,7 @@ from app.rest import (
         UploadHandler,
         ServeHandler,
         ListProjectsHandler,
+        ListProjectFilesSLOC,
     )
 
 def application():
@@ -22,6 +23,7 @@ def application():
             ('/upload', UploadHandler),
             ('/serve/([^/]+)?', ServeHandler),
             ('/projects/', ListProjectsHandler),
+            ('/ajax/project/([^/]+)?/SLOC/',ListProjectFilesSLOC),
             ('/',Main),
         ]
         ,debug=True)

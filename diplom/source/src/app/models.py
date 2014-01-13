@@ -14,9 +14,11 @@ class Vulnerability(db.Model):
 
 
 class Project(db.Model):
+    short = db.StringProperty()
     name = db.StringProperty()
     metrix = db.ReferenceProperty(Metrix, default=None)
     vulnerability = db.ReferenceProperty(Vulnerability, default=None)
+    p = db.FloatProperty()
 
 
 class SourceFile(db.Model):
@@ -25,6 +27,7 @@ class SourceFile(db.Model):
     source = db.BlobProperty()
     metrix = db.ReferenceProperty(Metrix, default=None)
     vulnerability = db.ReferenceProperty(Vulnerability, default=None)
+    p = db.FloatProperty()
 
 
 __author__ = 'andrew.vasyltsiv'

@@ -2,11 +2,15 @@
 
 from collections import namedtuple
 from StringIO import StringIO
+from md5 import md5
 import re
 from functools import reduce
 Source = namedtuple("Source", "project file_name file_source file_db_item holsted mackkeib jilb sloc vulns")
 
 class SourceFilesFormatError(Exception):
+    pass
+
+class SourceFileFormatError(SourceFilesFormatError):
     pass
 
 from app.models import (
@@ -54,32 +58,38 @@ class SourceProcessor():
             raise TypeError ("project_files have to be dict")
         if not isinstance(project_name, str):
             raise TypeError("project_name must to be str")
-        try:
-            if project_files['error'] == False:
-                if isinstance (project_files['project'], (list)):
-                    # list of files
-                    self.project_files = project_files['project']
-                    self.project_name = project_name
-                    self.project = Project.get_or_insert('name='+self.project_name)
-                    self.project.name = self.project_name
-                    self.files = []
-                    self.process_sources()
-                    self.project.put()
-                else:
-                    raise SourceFilesFormatError
+        # try:
+        if project_files['error'] == False:
+            if isinstance (project_files['project'], (list)):
+                # list of files
+                self.project_files = project_files['project']
+                self.project_name = project_name
+                self.project = Project.get_or_insert('name='+self.project_name)
+                self.project.name = self.project_name
+                self.project.short = md5(project_name).hexdigest()
+                self.files = []
+                self.process_sources()
+                self.project.put()
             else:
                 raise SourceFilesFormatError
-        except Exception, e:
-            print e
+        else:
             raise SourceFilesFormatError
+        # except Exception, e:
+        #     print e
+        #     raise SourceFilesFormatError
 
     def process_sources(self):
+
+        splitted_source = ""
+
         for file_name,file_source in self.project_files:
 
-            file_source = remove_Directives(file_source)
+            ast_source = remove_Directives(file_source)
+
             print "@file_source[%s]"%file_name #,file_source
             try:
-                ast = get_ast_from_text(file_source)
+                # ast = get_ast_from_text(file_source)
+                ast = None
             except Exception, e:
                 print e
                 debuglines= 8
@@ -92,17 +102,28 @@ class SourceProcessor():
                 ast = None
             if ast is not None:
                 #ast.show()
-                print ast.ext
-            holsted = (get_holsted(file_source,ast))
-            mackkeib = (get_mackkeib(file_source,ast))
-            jilb = (get_jilb(file_source,ast))
-            sloc = (get_sloc(file_source,ast))
-            vulns = (get_vulns_count(file_source,ast))
+                # print ast.ext
+                pass
 
+            holsted, mackkeib,jilb, sloc = (
+                function(file_source,ast) for function in (
+                    get_holsted,
+                    get_mackkeib,
+                    get_jilb,
+                    get_sloc
+                )
+            )
+
+            #BUF to fix
+            if holsted != (-1,-1,-1):
+                splitted_source += "\n"+file_source
+            
+            vulns = get_vulns_count(file_source,ast)
+        
             metrix = Metrix(
                             holsted = str(holsted),
                             mackkeib = str(mackkeib),
-                            jilb = str(get_jilb),
+                            jilb = str(jilb),
                             sloc = str(sloc)
                         )
             metrix.put()
@@ -137,10 +158,16 @@ class SourceProcessor():
         #     )
 
         sloc = reduce(lambda x,y: x+y, map(lambda x: x.sloc, self.files))
-        holsted = reduce(lambda x,y: x+y, map(lambda x: x.holsted, self.files))
-        mackkeib = reduce(lambda x,y: x+y, map(lambda x: x.mackkeib, self.files))
-        jilb = reduce(lambda x,y: x+y, map(lambda x: x.jilb, self.files))
-        vulns = reduce(lambda x,y: x+y, map(lambda x: x.vulns, self.files))
+
+        holsted = get_holsted(splitted_source,None)
+
+        mackkeib = get_mackkeib(splitted_source,None)
+
+        jilb = get_jilb(splitted_source,None)
+
+        vulns = reduce(lambda x,y: (x+y), map(lambda x: x.vulns, self.files))
+
+        # p = holsted[0]*
 
         metrix = Metrix(
                 sloc = str(sloc),

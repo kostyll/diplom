@@ -7,6 +7,7 @@ from utils.utils import SolutionRenderer
 
 import os
 import urllib
+import json
 
 from google.appengine.ext import blobstore
 from google.appengine.ext import webapp
@@ -27,7 +28,15 @@ from utils.utils import (
 
 from app.core import SourceProcessor
 
-projects = Project.all()
+projects_list = Project.all()
+# projects = map(lambda index, x: x.index = index, enumerate(projects))
+projects = projects_list
+# for index, x in enumerate(projects):
+#     x.index = index
+#     projects.append[x]
+
+# for x in projects:
+#     print x.index
 
 upload_url = blobstore.create_upload_url('/upload')
 
@@ -59,6 +68,7 @@ GENERAL_ITEMS = {
     'upload_button':"Завантажити", 
     'head_file_upload':'Завантаження проекту',
     'head_file_search':'Пошук',
+    'head_metrix_sloc':'Метрика SLOC',
     'upload_url':upload_url,
 }
 
@@ -133,8 +143,115 @@ class ListProjectsHandler(webapp2.RequestHandler):
         templates = process_template_imems()
         path = []
         process_template_path(templates, path)
+        # global projects
+        # data_projects = []
+        # for project in projects:
+        #     prj_name = project.name
+        #     sources = SourceFile.get_by_key_name('project',project)
+        #     print sources
+
         templates.update({'projects':projects, 'items':projects})
         return self.response.write(f.render('index',templates))
+
+def make_nodes_hier(nodelist,root_name):
+    root = {
+        'name':root_name,
+        'size':0
+    }
+    def insert_node(path,node):
+        node_path = path.split('/')
+        start = root
+        for path_item in node_path:
+            if not start.has_key('children'):
+                start['children'] = [
+                                        {
+                                            'name':path_item,
+                                            'size':0,
+                                            'language':'c'
+                                         }
+                                        ]
+            search_index = -1
+            for index, item in enumerate(start['children']):
+                if item['name'] == path_item:
+                    search_index = index
+                    break
+            if search_index != -1:
+                start = start['children'][search_index]
+            else:
+                newitem = {
+                            'name':path_item,
+                            'size':0,
+                            'language':'c'
+                            }
+                start['children'].append(newitem)
+                start = newitem
+        if not start.has_key('children'):
+            start['children'] = [node]
+        else:
+            start['children'].append(node)
+        # item_paths = []
+
+        start = root
+        start['size'] += node['size']
+
+        for path_item in node_path:
+            for index, item in enumerate(start['children']):
+                if item['name'] == path_item:
+                    break
+            start = start['children'][index]
+            start['size'] += node['size']
+
+
+        # for index, item in enumerate(node_path):
+        #     for children_index, children in  enumerate(start['children']):
+        #         if children['name'] == item:
+        #             break
+            
+        #     item_paths.append(
+        #             {
+        #                 'num':index,
+        #                 'link': start['children'][children_index]
+        #             }
+        #         )
+        #     start = start['children_index'][children_index]
+        # reversed_path = item_paths
+        # reversed_path.reverse()
+        # for item in reversed_path
+
+
+    for item in nodelist:
+        path, dummy, filename = item['name'].rpartition('/')
+        node = {
+            'name':filename,
+            'size':item['size'],
+            'language':'c'
+        }
+        insert_node(path, node)
+    return root
+
+
+class ListProjectFilesSLOC(webapp2.RequestHandler):
+    def get(self,project_name):
+        print repr(project_name)
+
+        project = Project.get_by_key_name('name='+project_name)
+
+        source_files = SourceFile.all().filter('project =',project)
+        for file in source_files:
+            print file
+        # print "source_files",source_files
+
+        files = map(lambda x: {'name':x.name,'size':int(x.metrix.sloc)}, source_files)
+        # print 'files',files
+
+        files = make_nodes_hier(files, project_name)
+        result = json.dumps(files)
+        print "result",result
+        # print 'node_arch',files
+        self.response.headers['Content-Type'.encode()] = 'application/json'.encode()
+        self.response.out.write(result)
+        # self.response.content_type = 'application/json'.encode()
+        # json.dump(result, self.response.out)
 
 
 __author__ = 'andrew.vasyltsiv'
