@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <title>{{title}}</title>
+    <meta charset=utf-8>
+    <meta name=description content="">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <!--<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" media="screen"> -->
+    <script src="/js/jquery.js"></script>
+    <link href="/css/bootstrap.css" rel="stylesheet" media="screen">
+    
+    <!-- Add custom CSS here -->
+    <link href="/css/sb-admin.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css">
+    <!-- Page Specific CSS -->
+    <!--<link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css"> -->
+    <link rel="stylesheet" href="/css/morris-0.4.3.min.css">
+    <script src="/js/bootstrap.js"></script>
+
+<script type="text/javascript" src="/jsapi.js"></script>
+<script type="text/javascript" src="/graph3d.js"></script>
+<link rel="stylesheet" href="/CodeMirror/lib/codemirror.css">
+<script src="/CodeMirror/lib/codemirror.js"></script>
+<script src="/CodeMirror/mode/clike/clike.js"></script>
+<script src="/CodeMirror/addon/selection/active-line.js"></script>
+
+<script type="text/javascript" src="/project_interface.js"></script>
+
+<!-- adding CodeFlower support -->
+<!-- <script type="text/javascript" src="/CodeFlower/javascripts/d3/d3.js"></script>
+<script type="text/javascript" src="/CodeFlower/javascripts/CodeFlower.js"></script> -->
+<script type="text/javascript" src="/CodeFlower/javascripts/d3/d3.js"></script>
+<script type="text/javascript" src="/CodeFlower/javascripts/d3/d3.geom.js"></script>
+<script type="text/javascript" src="/CodeFlower/javascripts/d3/d3.layout.js"></script>
+<script type="text/javascript" src="/CodeFlower/javascripts/CodeFlower.js"></script>
+<script type="text/javascript" src="/CodeFlower/javascripts/dataConverter.js"></script>
+
+ <style type="text/css">
+circle.node {
+  cursor: pointer;
+  stroke: #000;
+  stroke-width: .5px;
+}
+
+circle.node.directory {
+  stroke: #9ecae1;
+  stroke-width: 2px;
+}
+
+circle.node.collapsed {
+  stroke: #555;
+}
+
+.nodetext {
+  fill: #252929;
+  font-weight: bold;
+  text-shadow: 0 0 0.2em white;
+}
+
+line.link {
+  fill: none;
+  stroke: #9ecae1;
+  stroke-width: 1.5px;
+}
+    </style>
+
+  </head>
+  <body>
+    <div id="wrapper">
+
+
+    <nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+      <a class="navbar-brand" href="#">{{title}}</a>
+      <ul class="nav navbar-nav">
+        
+        <li class="active">
+          <a href="/">{{head_main}}</a>
+        </li>
+        <li>
+          <a href="/projects/">{{head_projects}}</a>
+        </li>
+
+        <li>
+          <form action="{{upload_url}}" method="POST" class="form-inline" role="form" enctype="multipart/form-data">
+                <div class="form-group">
+                  <input type="file" class="btn btn-primary" name="file">
+                </div>
+                <button type="submit" class="btn btn-primary">{{upload_button}}</button>
+              </form>
+        </li>
+        <li>   </li>
+        <li>
+          <form action="/search/" method="POST" class="form-inline" role="form">
+                <div class="form-group">
+                  <input type="email" class="form-control" id="" placeholder="{{search_query}}">
+                </div>
+                <button type="submit" class="btn btn-primary">{{search_button}}</button>
+              </form>
+        </li>
+
+      </ul>
+    </nav>
+
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav side-nav">
+          <li class=""><a href="/"><i class="fa fa-home"></i> {{head_main}}</a></li>
+          <!--<li class=""><a href="/projects/"><i class="fa fa-dashboard"></i> {{head_projects}}</a></li> -->
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-square-o-down"></i> {{head_projects}} <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                {{#projects}}
+                  <li><a href="/projects/{{name}}/">{{name}}</a></li>
+                {{/projects}}
+              </ul>
+          </li>
+        </ul>
+
+        <script type="text/javascript">
+          var html = "";
+          var path = {{path_content}};
+          for (i=0;i<path.length;i++){
+            html += '/ <a href="">'+path[i]+'</a> '
+          };
+          $('#path').replaceWith(html);
+        </script>
+        
+
+
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+             <table class="table table-bordered table-hover table-striped tablesorter" id="main_table">
+               <thead>
+                 <tr>
+                   <th class="header">
+                     {{content_description}}
+                     <i class="fa fa-sort"></i>
+                   </th>
+                   <th>
+                     {{content_chart}}
+                   </th>
+                 </tr>
+               </thead>
+               <tbody>
+                 <tr>
+                   <td class="cols-xs-4">
+                           <table class="table table-hover">
+                             <thead>
+                               <tr>
+                                 <th>{{head_project}}</th>
+                                 <th>{{head_metrix_holsted}}</th>
+                                 <th>{{head_metrix_mackkeib}}</th>
+                                 <th>{{head_metrix_jilb}}</th>
+                                 <th>{{head_vulns}}</th>
+                                 <th>P</th>
+                               </tr>
+                             </thead>
+                             <tbody>
+                               {{#files}}
+                               <tr>
+                                 <td><a href="/projects/{{name}}/">{{name}}</a></td>
+                                 <td>{{metrix.holsted}}</td>
+                                 <td>{{metrix.mackkeib}}</td>
+                                 <td>{{metrix.jilb}}</td> 
+                                 <td>{{vulnerability.vulnerability}}</td> 
+                                 <td>{{p}}</td>
+                               </tr>
+
+                               <!-- Add project info to buble-diagram data -->
+                               <script type="text/javascript">
+                                var row = Array(
+                                    '{{name}}',
+                                    {{potential}},
+                                    {{vulnerability.vulnerability}},
+                                    '{{name}}',
+                                    {{p}}
+                                    
+                                  )
+                                bubledata.push(row);
+                                // alert(row)
+                               </script>
+
+                               {{/files}}
+                             </tbody>
+                           </table>
+                   </td>
+                   <td class="cols-xs-4" width="280px">
+                    <div class="panel panel-info" style="width='180px';" >
+                        <div class="panel-heading">
+                          <h3 class="panel-title">{{chart_title}}</h3>
+                        </div>
+                        <div class="panel-body" >
+                          <div id="project_p_chart" ></div>
+                        </div>
+                    </div>
+                          
+
+                   </td>
+                 </tr>
+                 {{#files}}
+                  <tr>
+
+                    <td>
+                      <div class="panel panel-default">
+                        <div class="panel-heading">
+                          <a href="/projects/{{name}}/">{{name}}</a>
+                        </div>
+
+                        <div class="panel-body">
+
+                          <div class="list-group">
+                            <a href="#" class="list-group-item">
+                              <!--<h4 class="list-group-item-heading">{{head_metrix_holsted}}</h4> -->
+                              <span class="badge">
+                                <div id="holsted-value"></div>
+                              </span>
+                              <script type="text/javascript">
+                                $("#holsted-value").replaceWith(Array({{metrix.holsted}})[0][0]);
+                              </script>
+                              <p class="list-group-item-text">{{head_metrix_holsted}}</p>
+                            </a>
+                            <a href="#" class="list-group-item">
+                              <span class="badge">{{metrix.mackkeib}}</span>
+                              <p class="list-group-item-text">{{head_metrix_mackkeib}}</p>
+                            </a>
+                            <a href="#" class="list-group-item">
+                              <span class="badge">{{metrix.jilb}}</span>
+                              <p class="list-group-item-text">{{head_metrix_jilb}}</p>
+                            </a>
+                            <a href="#" class="list-group-item">
+                              <span class="badge">{{metrix.sloc}}</span>
+                              <p class="list-group-item-text">{{head_metrix_sloc}}</p>
+                            </a>
+                            <a href="#" class="list-group-item">
+                              <span class="badge">{{vulnerability.vulnerability}}</span>
+                              <p class="list-group-item-text">{{head_vulns}}</p>
+                            </a>
+                            <a href="#" class="list-group-item">
+                              <span class="badge">{{p}}</span>
+                              <p class="list-group-item-text">Ймовірність використання вразливостей</p>
+                            </a>                
+                          </div>
+                      </div>
+                   </td>
+                   <td cols>
+                    <div class="panel panel-info" >
+                        <div class="panel-heading">
+                          <h3 class="panel-title">Дії</h3>
+                        </div>
+                        <div class="panel-body" style="widht='180';">
+                       <!--    <div id="chart-sloc-{{short}}"></div> -->
+<!-- 
+                          <script type="text/javascript">draw3d('None',"piechart-{{name}}")</script>
+
+ -->
+ <!-- 
+                          <script type="text/javascript">
+                              var my_data_{{short}} = get_project_sloc_tree('{{name}}');
+                              var sloc_chart_{{short}} = new CodeFlower('#chart-sloc-{{short}}',200,200);
+                              sloc_chart_{{short}}.update(my_data_{{short}});
+                          </script>
+
+ -->
+                          <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal-{{short}}" data-refresh="true">
+                          Переглянути код
+                          </button>
+                          <button id="sign-vulns-{{short}}" class="btn btn-primary btn-lg">Підтвердити потенційну вразливість</button>
+                          <script type="text/javascript">
+                            $("#sign-vulns-{{short}}").click(function(){
+                                sign_vuln('{{short}}');
+                            });
+                          </script>
+                          <button id="unsign-vulns-{{short}}" class="btn btn-primary btn-lg">Відхилити вразливість</button>
+                          <script type="text/javascript">
+                            $("#unsign-vulns-{{short}}").click(function(){
+                                unsign_vuln('{{short}}');
+                            });
+                          </script>                          
+                          <button id="exploit-vulns-{{short}}" class="btn btn-primary btn-lg">Вразливості можливо використати</button>
+                          <script type="text/javascript">
+                            $("#exploit-vulns-{{short}}").click(function(){
+                                exploit_vuln('{{short}}');
+                            });
+                          </script>                          
+
+<!-- Modal -->
+<div class="modal fade" id="myModal-{{short}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">{{name}}</h4>
+      </div>
+      <div class="modal-body">
+
+        <div id="divcode-{{short}}">
+
+        </div>
+
+        <script type="text/javascript">
+
+          get_file('{{short}}');
+          // var myCodeMirror_{{short}} = CodeMirror(document.getElementById("code-{{short}}"), {
+          //   // value: "function myScript(){return 100;}\n",
+          //   matchBrackets: true,
+          //   mode: "text/x-csrc",
+          //   lineNumbers: true,
+          //   value: "function myScript(){return 100;}\n",
+          // });
+          var editor_{{short}} = new CodeMirror.fromTextArea(document.getElementById("code-{{short}}"), {
+            matchBrackets: true,
+            mode: "text/x-csrc",
+            lineNumbers: true
+          });
+
+        </script>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Закрити</button>
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+                        </div>
+                    </div>
+                   </td>
+                  </tr>
+                  <script type="text/javascript">
+                      global_item_intex += 1;
+                  </script>
+
+                 {{/files}}
+               </tbody>
+             </table>
+          </div>
+        </div>
+
+    </div> <!--wrapper -->
+
+     <script type="text/javascript">
+        
+        var project_p_data = get_project_p_tree('{{project}}');
+        var project_p_chart = new CodeFlower("#project_p_chart",200,200);
+        project_p_chart.update(project_p_data);
+
+     </script>
+
+    <!-- jQuery -->
+    <!-- <script src="//code.jquery.com/jquery.js"></script> -->
+    <!-- Bootstrap JavaScript -->
+    <!-- <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script> -->
+  </body>
+</html>

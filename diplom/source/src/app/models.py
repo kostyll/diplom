@@ -23,6 +23,7 @@ class Project(db.Model):
 
 
 class SourceFile(db.Model):
+    short = db.StringProperty()
     project = db.ReferenceProperty(Project)
     name = db.StringProperty()
     source = db.BlobProperty()

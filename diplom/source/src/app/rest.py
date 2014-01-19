@@ -254,6 +254,89 @@ class ListProjectFilesSLOC(webapp2.RequestHandler):
         # json.dump(result, self.response.out)
 
 
+class ListProjectFilesp(webapp2.RequestHandler):
+    def get(self,project_name):
+        print repr(project_name)
+
+        project = Project.get_by_key_name('name='+project_name)
+
+        source_files = SourceFile.all().filter('project =',project)
+        for file in source_files:
+            print file
+        # print "source_files",source_files
+
+        files = map(lambda x: {'name':x.name,'size':int(x.p*100)}, source_files)
+        # print 'files',files
+
+        files = make_nodes_hier(files, project_name)
+        result = json.dumps(files)
+        print "result",result
+        # print 'node_arch',files
+        self.response.headers['Content-Type'.encode()] = 'application/json'.encode()
+        self.response.out.write(result)
+
+
+class GetCodeHandler(webapp2.RequestHandler):
+    def get(self, filehash):
+        print filehash
+        code = SourceFile.all().filter('short',filehash)[0]
+        #print code.source
+        self.response.write(code.source)
+        return
+
+
+
+class ProjectHandler(webapp2.RequestHandler):
+    def get (self,project_name):
+        project = Project.get_by_key_name('name='+project_name)
+        source_files = SourceFile.all().filter('project =',project)
+
+        path = [project_name]
+
+        f = SolutionRenderer()
+        templates = process_template_imems()
+        process_template_path(templates, path)
+
+        templates.update({
+                'files': source_files,
+                'projects': projects,
+                'path': path,
+                'project': project_name
+            })
+        return self.response.write(f.render('project',templates))
+
+
+#recalcs projects p
+def recalc_p (source_file,):
+    if source_file.p > source_file.project.p :
+        source_file.project.p = source_file.p
+        source_file.put()
+
+
+class SignVulnerability(webapp2.RequestHandler):
+    def get (self,filehash):
+        source_file = SourceFile.all().filter('short',filehash)[0]
+        source_file.p = 0.7
+        source_file.put()
+        recalc_p(source_file)
+
+
+class UnSignVulnerability(webapp2.RequestHandler):
+    def get (self,filehash):
+        source_file = SourceFile.all().filter('short',filehash)[0]
+        source_file.p = 0.0
+        source_file.put()
+        recalc_p(source_file)
+
+
+class ExploitVulnerability(webapp2.RequestHandler):
+    def get (self,filehash):
+        source_file = SourceFile.all().filter('short',filehash)[0]
+        source_file.p = 1.0
+        source_file.put()
+        recalc_p(source_file)
+
+
 class TestCode(webapp2.RequestHandler):
     def get(self):
         """

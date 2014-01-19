@@ -98,17 +98,21 @@ class SourceProcessor():
                 source.p is not None:
                 if int(source.vulnerability.vulnerability) >0 :
                     tab.append((source.potential,source.p))
-        for i, item in enumerate(tab):
-            if tab[i-1] == tab[i]:
-                tab.pop(i)
+        tab = list(frozenset(tab))
         tab.sort()
-        tab = tab
+        try:                    
+            for i, item in enumerate(tab):
+                if tab[i+1] == tab[i]:
+                    tab.pop(i)
+        except IndexError:
+            pass
+        print tab
         self.tab_x = map(lambda x: x[0], tab)
         self.tab_f = map(lambda x: x[1], tab)
 
 
-    @staticmethod
-    def calc_p(potential):
+#    @staticmethod
+    def calc_p(self,potential):
         if len(self.tab_x) < 2:
             return 0.5
         try:
@@ -118,7 +122,8 @@ class SourceProcessor():
                 extrapolate=True
                 )
             return float(table(potential))
-        except:
+        except Exception, e:
+            print e
             return 0.5
 
 
@@ -130,7 +135,7 @@ class SourceProcessor():
 
             ast_source = remove_Directives(file_source)
 
-            print "@file_source[%s]"%file_name #,file_source
+            # print "@file_source[%s]"%file_name #,file_source
             try:
                 # ast = get_ast_from_text(file_source)
                 ast = None
@@ -183,11 +188,26 @@ class SourceProcessor():
                                     vulns
                                 )
             p = self.calc_p(potential)
+
+            short = self.project.short + md5(file_name).hexdigest()
+
+            # print ("filename & sloc & holsted & mackkeib & jilb & vulns & potential & p")            
+            print ("{} & {} & {} & {} & {} & {} & {} & {}\\\\".format(
+                    file_name,
+                    sloc,
+                    holsted[0],
+                    mackkeib,
+                    jilb,
+                    vulns,
+                    potential,
+                    p
+                ))
             source = Source(
                     project = self.project,
                     file_name = file_name,
                     file_source = file_source,
                     file_db_item = SourceFile(
+                            short = short,
                             project = self.project,
                             name = file_name,
                             source = file_source,

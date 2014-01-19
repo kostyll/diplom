@@ -14,8 +14,15 @@ from app.rest import (
         ServeHandler,
         ListProjectsHandler,
         ListProjectFilesSLOC,
+        ListProjectFilesp,
+        ProjectHandler,
+        GetCodeHandler,
+        SignVulnerability,
+        UnSignVulnerability,
+        ExploitVulnerability,
         TestCode,
     )
+
 
 def application():
     vertix_application = webapp2.WSGIApplication(
@@ -24,7 +31,13 @@ def application():
             ('/upload', UploadHandler),
             ('/serve/([^/]+)?', ServeHandler),
             ('/projects/', ListProjectsHandler),
+            ('/ajax/file/([^/]+)?/', GetCodeHandler),
+            ('/projects/([^/]+)?/',ProjectHandler),
             ('/ajax/project/([^/]+)?/SLOC/',ListProjectFilesSLOC),
+            ('/ajax/project/([^/]+)?/p/',ListProjectFilesp),
+            ('/ajax/sign/([^/]+)?/', SignVulnerability),
+            ('/ajax/unsign/([^/]+)?/', UnSignVulnerability),
+            ('/ajax/exploit/([^/]+)?/', ExploitVulnerability),
             ('/',Main),
             ('/test/',TestCode)
         ]

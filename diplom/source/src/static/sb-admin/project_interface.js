@@ -184,3 +184,81 @@ function get_project_sloc_tree(project_name) {
   console.log();
   return result;
 }
+
+function get_project_p_tree(project_name) {
+  var result;
+  var url = '/ajax/project/'+project_name+'/p/';
+  $.ajax({
+      url: url,
+      type: "GET",
+      dataType : "json",
+      async:false,
+      success: function(mess){
+        result = mess;
+        //alert('inside 1 mess',mess);
+        //result = mess;  
+        //alert('inside 2 mess',mess);
+        //alert('inside result',result);
+       // return mess.responseJSON;
+      }
+    });
+  return result;
+}
+
+function get_file(file_short) {
+  var result;
+  var url = '/ajax/file/' + file_short  + '/';
+  $.ajax({
+      url: url,
+      type: "GET",
+      // dataType : "html/text",
+      async:false,
+      success: function(mess){
+        result = mess;
+        //alert('inside 1 mess',mess);
+        //result = mess;  
+        //alert('inside 2 mess',mess);
+        //alert('inside result',result);
+       // return mess.responseJSON;
+      }
+    });
+  // console.log(result);
+  $('#divcode-'+file_short).replaceWith(
+      "<form><textarea id='code-"+ file_short + "'>" +
+      result+
+      "</textarea></form>"
+    );
+}
+
+function sign_vuln(file_short) {
+  $.ajax({
+    url : '/ajax/sign/'+file_short+'/',
+    type : "GET",
+    async : false,
+    success : function(mess) {
+      alert('Виконано');
+    }
+  })
+}
+
+function unsign_vuln(file_short) {
+  $.ajax({
+    url : '/ajax/unsign/'+file_short+'/',
+    type : "GET",
+    async : false,
+    success : function(mess) {
+      alert('Виконано');
+    }
+  })
+}
+
+function exploit_vuln(file_short) {
+  $.ajax({
+    url : '/ajax/exploit/'+file_short+'/',
+    type : "GET",
+    async : false,
+    success : function(mess) {
+      alert('Виконано');
+    }
+  })
+}
