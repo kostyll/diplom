@@ -4,7 +4,7 @@ img_extIsRegExp=false
 img_extensions=.eps .jpg .jpeg .png .pdf .ps .fig .gif
 kileprversion=2
 kileversion=2.1.3
-lastDocument=3r.tex
+lastDocument=diplom_doc.tex
 masterDocument=diplom_doc.tex
 name=diplom
 pkg_extIsRegExp=false
@@ -52,7 +52,34 @@ Highlighting=LaTeX
 Indentation Mode=normal
 Mode=LaTeX
 
+[document-settings,item:additions.tex]
+Bookmarks=
+Encoding=UTF-8
+FoldedColumns=
+FoldedLines=
+Highlighting=LaTeX
+Indentation Mode=normal
+Mode=LaTeX
+
+[document-settings,item:annotation.tex]
+Bookmarks=
+Encoding=UTF-8
+FoldedColumns=
+FoldedLines=
+Highlighting=LaTeX
+Indentation Mode=normal
+Mode=LaTeX
+
 [document-settings,item:diplom_doc.tex]
+Bookmarks=
+Encoding=UTF-8
+FoldedColumns=
+FoldedLines=
+Highlighting=LaTeX
+Indentation Mode=normal
+Mode=LaTeX
+
+[document-settings,item:enter.tex]
 Bookmarks=
 Encoding=UTF-8
 FoldedColumns=
@@ -70,12 +97,21 @@ Highlighting=None
 Indentation Mode=normal
 Mode=
 
+[document-settings,item:literature.tex]
+Bookmarks=
+Encoding=UTF-8
+FoldedColumns=
+FoldedLines=
+Highlighting=LaTeX
+Indentation Mode=normal
+Mode=LaTeX
+
 [item:1r.tex]
 archive=true
-column=14
+column=68
 encoding=UTF-8
 highlight=LaTeX
-line=17
+line=202
 mode=LaTeX
 open=false
 order=-1
@@ -85,7 +121,7 @@ archive=true
 column=0
 encoding=UTF-8
 highlight=LaTeX
-line=0
+line=565
 mode=LaTeX
 open=false
 order=-1
@@ -95,38 +131,38 @@ archive=true
 column=0
 encoding=UTF-8
 highlight=LaTeX
-line=115
+line=112
 mode=LaTeX
 open=true
-order=1
+order=2
 
 [item:4r.tex]
 archive=true
-column=5
+column=226
 encoding=UTF-8
 highlight=LaTeX
-line=11
+line=181
 mode=LaTeX
 open=false
 order=-1
 
 [item:additions.tex]
 archive=true
-column=137123388
-encoding=
-highlight=
-line=0
-mode=
-open=false
-order=-1
+column=19
+encoding=UTF-8
+highlight=LaTeX
+line=17
+mode=LaTeX
+open=true
+order=1
 
 [item:annotation.tex]
 archive=true
-column=1
-encoding=
-highlight=
-line=0
-mode=
+column=629
+encoding=UTF-8
+highlight=LaTeX
+line=14
+mode=LaTeX
 open=false
 order=-1
 
@@ -135,38 +171,38 @@ archive=true
 column=0
 encoding=UTF-8
 highlight=LaTeX
-line=84
+line=64
 mode=LaTeX
 open=true
 order=0
 
 [item:enter.tex]
 archive=true
-column=0
-encoding=
-highlight=
-line=0
-mode=
+column=11
+encoding=UTF-8
+highlight=LaTeX
+line=11
+mode=LaTeX
 open=false
 order=-1
 
 [item:literature.aux]
 archive=true
-column=0
+column=15
 encoding=UTF-8
 highlight=None
-line=5
+line=21
 mode=
-open=true
+open=false
 order=2
 
 [item:literature.tex]
 archive=true
-column=161452544
-encoding=
-highlight=
+column=0
+encoding=UTF-8
+highlight=LaTeX
 line=0
-mode=
+mode=LaTeX
 open=false
 order=-1
 
@@ -191,37 +227,61 @@ open=false
 order=-1
 
 [view-settings,view=0,item:1r.tex]
-CursorColumn=14
-CursorLine=17
+CursorColumn=68
+CursorLine=202
 JumpList=
 ViMarks=
 
 [view-settings,view=0,item:2r.tex]
 CursorColumn=0
-CursorLine=0
+CursorLine=565
 JumpList=
 ViMarks=
 
 [view-settings,view=0,item:3r.tex]
 CursorColumn=0
-CursorLine=115
+CursorLine=112
 JumpList=
 ViMarks=
 
 [view-settings,view=0,item:4r.tex]
-CursorColumn=5
-CursorLine=11
+CursorColumn=226
+CursorLine=181
+JumpList=
+ViMarks=
+
+[view-settings,view=0,item:additions.tex]
+CursorColumn=19
+CursorLine=17
+JumpList=
+ViMarks=
+
+[view-settings,view=0,item:annotation.tex]
+CursorColumn=629
+CursorLine=14
 JumpList=
 ViMarks=
 
 [view-settings,view=0,item:diplom_doc.tex]
 CursorColumn=0
-CursorLine=84
+CursorLine=64
+JumpList=
+ViMarks=
+
+[view-settings,view=0,item:enter.tex]
+CursorColumn=11
+CursorLine=11
 JumpList=
 ViMarks=
 
 [view-settings,view=0,item:literature.aux]
+CursorColumn=15
+CursorLine=21
+JumpList=
+ViMarks=
+
+[view-settings,view=0,item:literature.tex]
 CursorColumn=0
-CursorLine=5
+CursorLine=0
 JumpList=
 ViMarks=
